@@ -133,12 +133,22 @@ catch (e) {
 const replacemap = {
 	"YourGameName": config.YourGameName,
 	"yourgamename": config.YourGameName.toLowerCase(),
-	"source-folder": config.source,
+	"source": path.normalize(config.source),
 	"php-version": config.php8 ? "8.2.17" : "7.4.33",
 	"developers": config.developers,
 	"source-to-project": path.relative(config.source, process.cwd()).replace(/\\/g, '/'),
 	"source-to-template": path.relative(config.source, __dirname).replace(/\\/g, '/'),
 };
+
+const configFilePath = path.join(config.source, 'shared', 'bs-ts-template.jsonc');
+fs.writeFileSync(configFilePath, JSON.stringify(replacemap, null, 2));
+
+try {
+	jsoncUtil.readObject(configFilePath); // Verify config is valid JSON
+} catch (e) {
+	console.error("Failed to validate generated config file:", e);
+	process.exit(1);
+}
 
 const keyRegex = new RegExp('___([a-zA-Z0-9-]+?)___', 'g');
 const keyReplace = (content) => content.replace(keyRegex, (match, key) => replacemap[key] ?? match);
@@ -146,11 +156,6 @@ const keyReplace = (content) => content.replace(keyRegex, (match, key) => replac
 let replacequeue = [];
 
 //#region Populate File Queue
-
-if (fs.existsSync(__dirname + "/build.js"))
-	fs.unlinkSync(__dirname + "/build.js");
-
-replacequeue.push(["init/build.js", __dirname + "/build.js"]);
 
 if (config.typescript === true) {
 	replacequeue.push(['init/client/___yourgamename___.ts', config.source + 'client/___yourgamename___.ts']);
