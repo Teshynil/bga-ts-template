@@ -9483,6 +9483,14 @@ class Gamegui_Template
 		}
 	}
 
+	async bgaPlayDojoAnimation(t: DojoJS.Animation) {
+		await new Promise((i => {
+			e.connect(t, "onEnd", (() => i()));
+			t.play()
+		}
+		))
+	}
+
 	setupCoreNotifications() {
 		e.subscribe(
 			"gameStateChange",
