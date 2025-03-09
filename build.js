@@ -32,7 +32,7 @@ const jsoncUtil = {
 // Load configuration
 const configPath = path.join(process.cwd(), 'source', 'shared', 'bs-ts-template.jsonc');
 if (!fs.existsSync(configPath)) {
-    exitWithError("You must run 'npx bga-init' before running 'npx bga-build'! 'npx bga-init' will create this build script based on your project's parameters defined by the init arguments. ");
+	exitWithError("You must run 'npx bga-init' before running 'npx bga-build'! 'npx bga-init' will create this build script based on your project's parameters defined by the init arguments. ");
 }
 const config = jsoncUtil.readObject(configPath);
 if (!config.YourGameName || !config.developers || !config.source) {
@@ -100,7 +100,7 @@ const writer = {
 	indent: 0,
 	inTSProperty: 0,
 	fileSignature:
-`/*
+		`/*
  * THIS FILE HAS BEEN AUTOMATICALLY GENERATED. ANY CHANGES MADE DIRECTLY MAY BE OVERWRITTEN.
  *------
  * BGA framework: Gregory Isabelli & Emmanuel Colin & BoardGameArena
@@ -142,7 +142,7 @@ const writer = {
 					writer.buffer += isPHP ? 'array()' : '{}';
 					break;
 				}
-	
+
 				writer.buffer += isPHP ? 'array(\n' : '{\n';
 				writer.indent++;
 				for (const key in obj) {
@@ -154,20 +154,19 @@ const writer = {
 					else {
 						if (writer.typescript_type_properties.has(key))
 							writer.inTSProperty++;
-						
-						if (writer.inTSProperty == 0 || !isPHP)
-						{
+
+						if (writer.inTSProperty == 0 || !isPHP) {
 							writer.buffer += '\t'.repeat(writer.indent);
 							if (!isNaN(parseInt(key))) {
 								writer.buffer += isPHP ? `${key} => ` : `${key}: `;
 							} else {
 								writer.buffer += isPHP ? `'${key}' => ` : `'${key}': `;
 							}
-							
+
 							writer.stringify(obj[key], isPHP);
 							writer.buffer += ',\n';
 						}
-	
+
 						if (writer.typescript_type_properties.has(key))
 							writer.inTSProperty--;
 					}
@@ -175,7 +174,7 @@ const writer = {
 				writer.indent--;
 				writer.buffer += '\t'.repeat(writer.indent);
 				writer.buffer += isPHP ? ')' : '}';
-	
+
 				break;
 			case 'string':
 				// stringify with single quotes:
@@ -212,8 +211,7 @@ const writer = {
 //#endregion
 
 //#region Game States
-if (fs.existsSync(path.join(sourceFolder, 'shared/gamestates.jsonc')))
-{
+if (fs.existsSync(path.join(sourceFolder, 'shared/gamestates.jsonc'))) {
 	builder.watchCommand("Game States: 'gamestates.jsonc' => 'states.inc.php', '.action.php', [gamestates.d.ts]", path.join(sourceFolder, 'shared/gamestates.jsonc'), () => {
 		if (!fs.existsSync(path.join(sourceFolder, 'shared/gamestates.jsonc'))) {
 			console.error(`File not found: ${path.join(sourceFolder, 'shared/gamestates.jsonc')}`);
@@ -265,8 +263,7 @@ if (fs.existsSync(path.join(sourceFolder, 'shared/gamestates.jsonc')))
 		// Make sure that only the stGameSetup and stGameEnd actions are typed as manager. Also, make sure all 'game' and 'manager' states have an action.
 		for (const key in statesJSON) {
 			const state = statesJSON[key];
-			if (state.type === 'manager')
-			{
+			if (state.type === 'manager') {
 				if (state.action !== 'stGameSetup' && state.action !== 'stGameEnd') {
 					exitWithError(`State ${key} ("${state.name}") is typed as 'manager' but is not the Game Setup or Game End state.`);
 				}
@@ -516,14 +513,13 @@ if (fs.existsSync(path.join(sourceFolder, 'shared/gamestates.jsonc')))
 		}
 
 		// #region Write .d.ts
-		if (fs.existsSync(path.join(sourceFolder, 'client/tsconfig.json')))
-		{
+		if (fs.existsSync(path.join(sourceFolder, 'client/tsconfig.json'))) {
 			const buildPath = path.join(sourceFolder, 'client/build/');
 			if (!fs.existsSync(buildPath))
 				fs.mkdirSync(buildPath, { recursive: true });
 
 			fs.writeFileSync(path.join(buildPath, 'gamestates.d.ts'),
-`${writer.fileSignature}
+				`${writer.fileSignature}
 declare namespace BGA {
 
 interface DefinedGameStates extends ValidateGameStates<${writer.stringify(statesJSON, false)}> {}
@@ -540,7 +536,7 @@ interface GameStatePossibleActions ${writer.stringify(actionTypes, false, true)}
 		// #region Write states.inc.php
 
 		fs.writeFileSync('states.inc.php',
-`<?php
+			`<?php
 declare(strict_types=1);
 ${writer.fileSignature}
 /**
@@ -551,27 +547,27 @@ ${writer.fileSignature}
 if (false) {
 	/** @var ${yourgamename} $game */
 	${Object.values(statesJSON)
-		.filter(state => state.action !== undefined && state.type !== 'manager')
-		.map(state => `$game->${state.action}();`)
-		.join('\n\t')
-	}
+				.filter(state => state.action !== undefined && state.type !== 'manager')
+				.map(state => `$game->${state.action}();`)
+				.join('\n\t')
+			}
 }
 
 $machinestates = ${writer.stringify(statesJSON, true)};`
-);
+		);
 		// #endregion
 
 		// #region Write .action.php
 		const pType = (parameter) => {
 			return parameter.type === 'AT_float' ? 'float' :
 				parameter.type === 'AT_int' ? 'int' :
-				parameter.type === 'AT_posint' ? 'int' :
-				parameter.type === 'AT_bool' ? 'bool' :
-				'string';
+					parameter.type === 'AT_posint' ? 'int' :
+						parameter.type === 'AT_bool' ? 'bool' :
+							'string';
 		};
 		const pArgs = (parameter) => {
 			let result = `'${parameter.name}', ${parameter.type}`;
-			
+
 			if (parameter.mandatory === undefined || parameter.mandatory === true)
 				result += ', true';
 			else if (parameter.argTypeDetails || parameter.bCanFail === true) {
@@ -592,7 +588,7 @@ $machinestates = ${writer.stringify(statesJSON, true)};`
 			return result;
 		};
 		fs.writeFileSync(`${yourgamename}.action.php`,
-`<?php
+			`<?php
 ${writer.fileSignature}
 class action_${yourgamename} extends APP_GameAction
 {
@@ -617,7 +613,7 @@ class action_${yourgamename} extends APP_GameAction
 ${parameters.map(parameter => `
 		/** @var ${pType(parameter)} $${parameter.name} */
 		$${parameter.name} = self::getArg(${pArgs(parameter)});`
-).join('')}${parameters.length > 0 ? '\n' : ''}
+			).join('')}${parameters.length > 0 ? '\n' : ''}
 		$this->game->${name}( ${parameters.map(x => "$" + x.name).join(', ')} );
 		self::ajaxResponse();
 	}`).join('')}
@@ -636,22 +632,21 @@ ${parameters.map(parameter => `
 		builder.watchCommand(message, source, () => fs.writeFileSync(target, jsoncUtil.stringToJson(fs.readFileSync(source, 'utf8'))));
 	};
 
-	if (fs.existsSync(path.join(sourceFolder, 'shared','stats.jsonc')))
-		jsoncToJson("Game Statistics: stats.jsonc => stats.json", path.join(sourceFolder, 'shared','stats.jsonc'), 'stats.json');
-	if (fs.existsSync(path.join(sourceFolder, 'shared','gameoptions.jsonc')))
-		jsoncToJson("Game Options: gameoptions.jsonc => gameoptions.json", path.join(sourceFolder, 'shared','gameoptions.jsonc'), 'gameoptions.json');
-	if (fs.existsSync(path.join(sourceFolder, 'shared','gamepreferences.jsonc')))
-		jsoncToJson("Game Preferences: gamepreferences.jsonc => gamepreferences.json", path.join(sourceFolder, 'shared','gamepreferences.jsonc'), 'gamepreferences.json');
+	if (fs.existsSync(path.join(sourceFolder, 'shared', 'stats.jsonc')))
+		jsoncToJson("Game Statistics: stats.jsonc => stats.json", path.join(sourceFolder, 'shared', 'stats.jsonc'), 'stats.json');
+	if (fs.existsSync(path.join(sourceFolder, 'shared', 'gameoptions.jsonc')))
+		jsoncToJson("Game Options: gameoptions.jsonc => gameoptions.json", path.join(sourceFolder, 'shared', 'gameoptions.jsonc'), 'gameoptions.json');
+	if (fs.existsSync(path.join(sourceFolder, 'shared', 'gamepreferences.jsonc')))
+		jsoncToJson("Game Preferences: gamepreferences.jsonc => gamepreferences.json", path.join(sourceFolder, 'shared', 'gamepreferences.jsonc'), 'gamepreferences.json');
 }
 //#endregion
 
 //#region Game Infos
-if (fs.existsSync(path.join(sourceFolder, 'shared/gameinfos.jsonc')))
-{
+if (fs.existsSync(path.join(sourceFolder, 'shared/gameinfos.jsonc'))) {
 	builder.watchCommand("Game Infos: gameinfos.jsonc => gameinfos.inc.php", path.join(sourceFolder, 'shared/gameinfos.jsonc'), () => {
 		const gameinfos = jsoncUtil.readObject(path.join(sourceFolder, 'shared/gameinfos.jsonc'));
 		fs.writeFileSync('gameinfos.inc.php',
-`<?php
+			`<?php
 ${writer.fileSignature}
 /** @var (string|int|null|bool|string[]|int[])[] $gameinfos */
 $gameinfos = ${writer.stringify(gameinfos, true)};`);
@@ -661,7 +656,7 @@ $gameinfos = ${writer.stringify(gameinfos, true)};`);
 
 //#region Compilers
 
-if (fs.existsSync(path.join(sourceFolder, 'client/tsconfig.json'))){
+if (fs.existsSync(path.join(sourceFolder, 'client/tsconfig.json'))) {
 
 	const tsCommand = `npx tsc -p "${path.join(sourceFolder, 'client')}" --outFile ${yourgamename}.js` + (builder.watch ? ' -w' : '');
 	builder.execCommand(`Typescript compiler: client/define.ts => ${yourgamename}.js`, tsCommand);
@@ -714,7 +709,7 @@ if (fs.existsSync(path.join(sourceFolder, 'client/tsconfig.json'))){
 }
 
 if (fs.existsSync(path.join(sourceFolder, `client/${yourgamename}.scss`))) {
-	builder.execCommand(`SCSS compiler: client/${yourgamename}.scss => ${yourgamename}.css`, 
+	builder.execCommand(`SCSS compiler: client/${yourgamename}.scss => ${yourgamename}.css`,
 		`npx sass --no-source-map ${path.join(sourceFolder, `client/${yourgamename}.scss`)} ${yourgamename}.css` + (builder.watch ? ' --watch' : ''));
 }
 
