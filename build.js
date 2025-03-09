@@ -219,6 +219,74 @@ if (fs.existsSync(path.join(sourceFolder, 'shared/gamestates.jsonc'))) {
 		}
 
 		let statesJSON = jsoncUtil.readObject(path.join(sourceFolder, 'shared/gamestates.jsonc'));
+		let stateIdCounter = 1;
+
+		const statesToAdd = [];
+		const stateNamesToIdMap = new Map();
+		Object.entries(statesJSON).forEach(([stateName, stateDef]) => {
+			if (stateName === "gameEnd") {
+				stateDef.id = 99;
+				stateNamesToIdMap.set(stateName, stateDef.id);
+				return;
+			}
+			stateDef.id = stateIdCounter++;
+			stateNamesToIdMap.set(stateName, stateDef.id);
+			if (stateDef.relatedGameState) {
+				const gameStateName = `${stateName}Game`;
+
+				// Create new game state
+				const gameState = {
+					type: "game",
+					transitions: stateDef.relatedGameState.transitions,
+					description: "",
+					descriptionmyturn: ""
+				};
+
+				// Assign ID and add to temp array
+				gameState.id = stateIdCounter++;
+				statesToAdd.push([gameStateName, gameState]);
+				delete stateDef.relatedGameState
+				stateNamesToIdMap.set(gameStateName, gameState.id);
+			}
+		});
+
+		statesToAdd.forEach(([name, state]) => {
+			statesJSON[name] = state;
+		});
+
+		// Transition conversion function
+		function convertTransitions(transitions, idMap, sourceState) {
+			const converted = {};
+			for (const [transitionName, targetStateName] of Object.entries(transitions)) {
+				if (!idMap.has(targetStateName)) {
+					throw new Error(`Transition "${transitionName}" in state ${sourceState} ` +
+						`points to non-existent state: ${targetStateName}`);
+				}
+				converted[transitionName] = idMap.get(targetStateName);
+			}
+			return converted;
+		}
+
+		Object.entries(statesJSON).forEach(([stateName, stateDef]) => {
+			if (stateDef.transitions) {
+				stateDef.transitions = convertTransitions(stateDef.transitions, stateNamesToIdMap, stateName);
+			}
+		});
+
+
+		const BGACompatibleStates = {};
+
+		Object.entries(statesJSON).forEach(([stateName, stateDef]) => {
+			const id = stateDef.id;
+			const BGAGameState = Object.assign({ name: stateName }, stateDef);
+			delete BGAGameState.id;
+			if (BGAGameState.type === "game" | BGAGameState.type === "manager") {
+				BGAGameState.action = stateDef.type === 'manager' ? `st${stateName.replace(/(?:^|_)(\w)/g, (_, c) => c.toUpperCase())}` : 'stAction';
+			}
+			BGACompatibleStates[id] = BGAGameState;
+		});
+
+		statesJSON = BGACompatibleStates;
 
 		// #region Validate+Autofill
 

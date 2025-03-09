@@ -1,6 +1,6 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
-	"title": "Game Stats",
+	"title": "Game States",
 	"type": "object",
 	"description": "This file is an alternative to defining 'states.inc.php'. Using this file will provide error checking and type completion, making it much easier to define and use states correctly the first time.",
 	"properties": {
@@ -11,19 +11,35 @@
 		}
 	},
 	"patternProperties": {
-		"^[0-9_]*$": {
+		"^[a-zA-Z_][a-zA-Z0-9_]*$": {
 			"type": "object",
 			"description": "A game state that is defined within the statemachine.",
 			"properties": {
-				"name": {
-					"type": "string",
-					"description": "The name of the state used as an identifier in game logic. This should be unique, although this is not enforced.",
-					"minLength": 1
-				},
 				"type": {
 					"type": "string",
 					"description": "The type of the game state. This is used to determine where/how the game state is evaluated. 'activeplayer': One player is active and must play any of the 'possibleactions'. 'multipleactiveplayer': There are multiple players which can preform any of the 'possibleactions'. 'private': Must be transitioned into by a 'multipleactiveplayer' game state, and is used to preform complex actions for players in parallel without reveling state information of other players. 'game': There are no active players and usually the game state will be transitioned immediately after evaluating the 'action'. 'manager': Used for the game setup and game end states.",
 					"enum": [ "activeplayer", "multipleactiveplayer", "private", "game", "manager" ]
+				},
+				"relatedGameState": {
+					"type": "object",
+					"description": "If defined, creates a related state with a 'Game' postfix and its transitions.",
+					"properties": {
+						"transitions": {
+							"type": "object",
+							"minProperties": 1,
+							"description": "Transitions for the auto-generated related state.",
+							"patternProperties": {
+								"^[a-zA-Z0-9_-]*$": {
+								"type": "string",
+								"description": "Target state name for the related state transition.",
+								"minLength": 1
+								}
+							},
+							"additionalProperties": false
+						}
+					},
+					"required": ["transitions"],
+					"additionalProperties": false
 				},
 				"description": {
 					"type": "string",
@@ -33,19 +49,13 @@
 					"type": "string",
 					"description": "A description of the game state which is displayed on the active player. Use ${you} to refer to the specific client, and ${<arg>} to refer to any stringlike argument that is defined in 'argsTypes'. This MUST be defined if 'type' is 'activeplayer' or 'multipleactiveplayer' (an empty string can be used if this is intended)."
 				},
-				"action": {
-					"type": "string",
-					"description": "The action that is evaluated when the game state is transitioned into. This is a function that is defined in 'game.php'. It is usually a good idea to name this 'st<state name>' for clarity.",
-					"minLength": 1,
-					"default": "st_<state name>"
-				},
 				"transitions": {
 					"type": "object",
 					"description": "This is a record of transition names and target game states. The transition names are purely for code clarity and is always used in a lookup to determine the target game state. This is always required on all states other than the final game end state.",
 					"minProperties": 1,
 					"patternProperties": {
 						"^[a-zA-Z0-9_-]*$": {
-							"type": "integer",
+							"type": "string",
 							"description": "The target game state that is transitioned into when the transition is called. This should be a valid game state id defined in this file (which will be validated by the code generator).",
 							"minLength": 1
 						}
@@ -126,15 +136,14 @@
 					"default": false
 				},
 				"initialprivate": {
-					"type": "integer",
-					"description": "If this is a 'multipleactiveplayer' state which should lead into parallel private states, this is the id of the state that should be transitioned into for each player.",
-					"minimum": 1
+					"type": "string",
+					"description": "If this is a 'multipleactiveplayer' state which should lead into parallel private states, this is the id of the state that should be transitioned into for each player."
 				}
 			},
 			"additionalProperties": false,
-			"required": [ "name", "type" ]
+			"required": [ "type" ]
 		}
 	},
 	"additionalProperties": false,
-	"required": [ "1" ]
+	"required": ["gameSetup", "gameEnd"]
 }

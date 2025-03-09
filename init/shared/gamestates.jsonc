@@ -18,25 +18,27 @@
 	// "$schema": "../___source-to-template___/schema/gamestates.schema.json",
 
 	// The initial state. Please do not modify.
-	"1": {
-		"name": "gameSetup",
+	"gameSetup": {
 		"description": "",
 		"type": "manager",
-		"action": "stGameSetup",
-		"transitions": { "": 2 }
+		"transitions": { "": "dummmy" }
 	},
 
 	// Note: ID=2: your first state. If not, change the transition in the gameSetup above.
-	"2": {
-		"name": "dummmy",
+	"dummmy": {
 		"description": "${actplayer} must play a card or pass",
 		"descriptionmyturn": "${you} must play a card or pass",
 		"type": "activeplayer",
+		"relatedGameState": {
+			"transitions":{
+				"test":"dummy"
+			}
+		},
 		"possibleactions": {
 			"playCard": [{ "name": "card_id", "type": "AT_int" }],
 			"pass": []
 		},
-		"transitions": { "playCard": 2, "pass": 2 }
+		"transitions": { "playCard": "dummmyGame", "pass": "dummmy" }
 	},
 
 /*
@@ -63,11 +65,9 @@
 
 	// Final state.
 	// Please do not modify (and do not overload action/args methods}.
-	"99": {
-		"name": "gameEnd",
+	"gameEnd": {
 		"description": "End of game",
 		"type": "manager",
-		"action": "stGameEnd",
 		"args": "argGameEnd",
 		"argsType": "object" // Automatically typed by framework.
 	}
