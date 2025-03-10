@@ -137,7 +137,7 @@ const replacemap = {
 	"php-version": config.php8 ? "8.2.17" : "7.4.33",
 	"developers": config.developers,
 	"source-to-project": path.relative(config.source, process.cwd()).replace(/\\/g, '/'),
-	"source-to-template": path.relative(config.source, __dirname).replace(/\\/g, '/'),
+	"source-to-template": path.relative(process.cwd(), __dirname).replace(/\\/g, '/'),
 };
 
 const configFilePath = path.join(config.source, 'shared', 'bs-ts-template.jsonc');
