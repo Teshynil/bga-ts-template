@@ -21,13 +21,13 @@
 	],
 	"compilerOptions": {
 		/* NEVER CHANGE THESE */
-		"target": "es5", // This is the framework's version
+		"target": "ES6", // This is the framework's version
 		"module": "AMD", // This is what allows for imports and automatically creates the define function.
 
 		/* Recommended, should not need to change. */
 		"moduleResolution": "node10",
 		"lib": [ "dom", "esnext" ],
-		"types": [ "bga-ts-template" ], // Includes all non-module types which are on HTML script tags.
+		"types": [ "teshynil-bga-template" ], // Includes all non-module types which are on HTML script tags.
 
 		"paths": {
 			// Required: Allows modules to resolve correctly.

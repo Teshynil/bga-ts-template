@@ -280,8 +280,8 @@ The cookbook contains common game mechanics and components. These recipes are pu
 	"files": [
 		"yourgamename.ts",
 		"yourgamename.d.ts",
-		// Add Cookbook files here: <generated-path>/node_modules/bga-ts-template/typescript/cookbook/<module>.ts
-		"<generated-path>/node_modules/bga-ts-template/typescript/cookbook/<module>.ts"
+		// Add Cookbook files here: <generated-path>/node_modules/teshynil-bga-template/typescript/cookbook/<module>.ts
+		"<generated-path>/node_modules/teshynil-bga-template/typescript/cookbook/<module>.ts"
 	]
 }
 ```
@@ -309,7 +309,7 @@ Using the common cookbook module is recommended as it contains function that are
 	"files": [
 		"yourgamename.ts",
 		"yourgamename.d.ts",
-		"../../node_modules/bga-ts-template/typescript/cookbook/common.ts"
+		"../../node_modules/teshynil-bga-template/typescript/cookbook/common.ts"
 	]
 }
 ```

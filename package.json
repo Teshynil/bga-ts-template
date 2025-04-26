@@ -1,7 +1,7 @@
 {
-	"name": "bga-ts-template",
-	"version": "2.0.5",
-	"description": "Nearly full typing for all BGA and Dojo components, including typing checking templates and cookbook recipes.",
+	"name": "teshynil-bga-template",
+	"version": "1.0.0",
+	"description": "A Custom BGA Type Safe Template for Teshynil. Based on https://github.com/NevinAF/bga-ts-template",
 	"types": "./typescript/types/index.d.ts",
 	"scripts": {
 		"test": "tsc -p typescript/lib"
@@ -12,17 +12,17 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/NevinAF/bga-ts-template.git"
+		"url": "git+https://github.com/Teshynil/teshynil-bga-template.git"
 	},
 	"keywords": [
 		"BGA"
 	],
-	"author": "Nevin Foster",
+	"author": "Teshynil",
 	"license": "ISC",
 	"bugs": {
-		"url": "https://github.com/NevinAF/bga-ts-template/issues"
+		"url": "https://github.com/Teshynil/teshynil-bga-template/issues"
 	},
-	"homepage": "https://github.com/NevinAF/bga-ts-template#readme",
+	"homepage": "https://github.com/Teshynil/teshynil-bga-template#readme",
 	"devDependencies": {
 		"typescript": "^4.1.3"
 	}

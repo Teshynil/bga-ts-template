@@ -1,23 +1,27 @@
-# Board Game Arena: Type Safe Template
+# Teshynil BGA Template
 
 <table><tr>
-	<td> Author: NevinAF </td>
-	<td> Version: 2.0.5 </td>
-	<td> Date: October 12th, 2024 </td>
+	<td> Author: Teshynil </td>
+	<td> Version: 1.0.0 </td>
+	<td> Date: January 2nd, 2025 </td>
 </tr></table>
 
-[![npm version](https://badge.fury.io/js/bga-ts-template.svg)](https://badge.fury.io/js/bga-ts-template)
+This project is based on [bga-ts-template](https://github.com/NevinAF/bga-ts-template) by NevinAF.
+I wanted to add more functionality on top the original template to facilitate the development of the games I am working on.
 
-BGA Type Safe Template is an npm package that includes:
+Teshynil BGA Template is an npm package that includes:
 
 - Typescript with
 	- Nearly full typing for all BGA and Dojo components and heavy documentation.
 	- All BGA source code mapped to provided types and slightly cleaned up for typescript.
 	- Detailed yet simple typechecking using expandable types for game states, player actions, notifications, and gamedatas.
 	- Cookbook recipes for common game mechanics and components, pulled from the BGA documentation and other sources.
+	- Additional functionality like EventBuses, GameElement Management, and more.
 - Schema files for all major BGA data files (game states, infos, options, stats, and preferences).
+	- With custom support to not avoid having to manage the state number directly.
 - SCSS support with a one-to-one replacement.
 - Better PHP intellisense and error checking, as well as auto generating files and type enforcement.
+	- Improved management of states and actions by separating them in its own classes.
 
 *ALL of the above features are opt-in! Edit the init parameters to add/remove whatever fits your development needs*
 
