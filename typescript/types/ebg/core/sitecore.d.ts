@@ -748,18 +748,18 @@ declare let SiteCore: DojoJS.DojoClass<{
     rotateTo(target: string | HTMLElement, degree: Parameters<typeof tofloat>[0]): void;
     getAbsRotationAngle(target: string | Element | null): number;
     addClassToClass<T extends keyof CSSStyleDeclaration>(className: string, property: T, value: CSSStyleDeclaration[T]): void;
-    connect<K extends keyof DojoJS.AllEvents>(targetObject: DojoJS.ConnectListenerTarget<K>, event: K | `on${K}`, method: keyof any): void;
-    connect<K extends keyof DojoJS.AllEvents, M extends DojoJS.BoundFunc<any, [DojoJS.AllEvents[K]], any>>(targetObject: DojoJS.ConnectListenerTarget<K>, event: K | `on${K}`, method: M, dontFix?: boolean): void;
-    connect<T extends DojoJS.ConnectMethodTarget<U>, U extends string>(targetObject: T, event: U, method: keyof any): void;
+    connect<K extends keyof DojoJS.AllEvents>(targetObject: DojoJS.ConnectListenerTarget<K>, event: K | `on${K}`, method: keyof /*elided*/ any): void;
+    connect<K extends keyof DojoJS.AllEvents, M extends DojoJS.BoundFunc</*elided*/ any, [DojoJS.AllEvents[K]], any>>(targetObject: DojoJS.ConnectListenerTarget<K>, event: K | `on${K}`, method: M, dontFix?: boolean): void;
+    connect<T extends DojoJS.ConnectMethodTarget<U>, U extends string>(targetObject: T, event: U, method: keyof /*elided*/ any): void;
     connect<T extends DojoJS.ConnectMethodTarget<U>, U extends string, S, M extends DojoJS.BoundFunc<S, DojoJS.ConnectMethodParams<T, U>, any>>(targetObject: T, event: U, method: M, dontFix?: boolean): void;
     disconnect<K extends keyof DojoJS.AllEvents>(targetObject: DojoJS.ConnectListenerTarget<K>, event: K | `on${K}`): void;
     disconnect<T extends DojoJS.ConnectMethodTarget<U>, U extends string>(targetObject: T, event: U): void;
-    connectClass<K extends keyof DojoJS.AllEvents>(className: string, event: K | `on${K}`, method: keyof any): void;
-    connectClass<K extends keyof DojoJS.AllEvents, M extends DojoJS.BoundFunc<any, [DojoJS.AllEvents[K]], any>>(className: string, event: K | `on${K}`, method: M): void;
-    connectQuery<K extends keyof DojoJS.AllEvents>(selector: string, event: K | `on${K}`, method: keyof any): void;
-    connectQuery<K extends keyof DojoJS.AllEvents, M extends DojoJS.BoundFunc<any, [DojoJS.AllEvents[K]], any>>(selector: string, event: K | `on${K}`, method: M): void;
-    addEventToClass<K extends keyof DojoJS.AllEvents>(className: string, event: K | `on${K}`, method: keyof any): void;
-    addEventToClass<K extends keyof DojoJS.AllEvents, M extends DojoJS.BoundFunc<any, [DojoJS.AllEvents[K]], any>>(className: string, event: K | `on${K}`, method: M): void;
+    connectClass<K extends keyof DojoJS.AllEvents>(className: string, event: K | `on${K}`, method: keyof /*elided*/ any): void;
+    connectClass<K extends keyof DojoJS.AllEvents, M extends DojoJS.BoundFunc</*elided*/ any, [DojoJS.AllEvents[K]], any>>(className: string, event: K | `on${K}`, method: M): void;
+    connectQuery<K extends keyof DojoJS.AllEvents>(selector: string, event: K | `on${K}`, method: keyof /*elided*/ any): void;
+    connectQuery<K extends keyof DojoJS.AllEvents, M extends DojoJS.BoundFunc</*elided*/ any, [DojoJS.AllEvents[K]], any>>(selector: string, event: K | `on${K}`, method: M): void;
+    addEventToClass<K extends keyof DojoJS.AllEvents>(className: string, event: K | `on${K}`, method: keyof /*elided*/ any): void;
+    addEventToClass<K extends keyof DojoJS.AllEvents, M extends DojoJS.BoundFunc</*elided*/ any, [DojoJS.AllEvents[K]], any>>(className: string, event: K | `on${K}`, method: M): void;
     disconnectAll(): void;
     setCounter(counter_name: BGA.CounterNames, new_value: BGA.ID): void | throws<TypeError>;
     incCounter(counter_name: BGA.CounterNames, delta: BGA.ID): void;
@@ -786,7 +786,7 @@ declare let SiteCore: DojoJS.DojoClass<{
     displayScoring(anchor: string | HTMLElement, color: string, score: number, duration?: number, offset_x?: number, offset_y?: number): void;
     showBubble(anchor: string, message: string, delay?: number, duration?: number, custom_class?: string): void;
     showClick(anchor: string, left: CSSStyleDeclaration["left"] | number, top: CSSStyleDeclaration["top"] | number, backgroundColor?: CSSStyleDeclaration["backgroundColor"]): void;
-    getRankString(player_rank: string | number, dontOrderLosers?: boolean | any): (typeof dontOrderLosers extends Falsy ? "1st" | "2nd" | "3rd" | `${number}th` : "Winner" | "Loser") | "not ranked" | string;
+    getRankString(player_rank: string | number, dontOrderLosers?: boolean | any): (any extends Falsy ? "1st" | "2nd" | "3rd" | `${number}th` : "Winner" | "Loser") | "not ranked" | string;
     getKarmaLabel(karma: number | string): {
         label: "Perfect" | string;
         css: "exceptional";

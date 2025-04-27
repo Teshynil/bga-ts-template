@@ -24,6 +24,6 @@
 	},
 	"homepage": "https://github.com/Teshynil/teshynil-bga-template#readme",
 	"devDependencies": {
-		"typescript": "^4.1.3"
+		"typescript": "^5.8.3"
 	}
 }

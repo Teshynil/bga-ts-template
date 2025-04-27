@@ -33,7 +33,8 @@
 			// Required: Allows modules to resolve correctly.
 			"*": [ "/*", "../___source-to-template___/typescript/types/*" ],
 			// Optional: Include cookbook modules when auto-completing modules. This are only included if imported in your code.
-			"cookbook/*": [ "../___source-to-template___/typescript/cookbook/*" ]
+			"cookbook/*": [ "../___source-to-template___/typescript/cookbook/*" ],
+			"extensions/*": [ "../___source-to-template___/typescript/extensions/*" ]
 		},
 		
 		/* Preference. This defaults to the most strict ts rules. */

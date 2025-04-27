@@ -107,7 +107,7 @@ class Lang {
 	 */
 	getObject<P extends string | Falsy, C extends Record<string, any>>(name: P, create?: boolean, context?: C): P extends Falsy ? C : any
 	{
-		return name ? resolvePropertyPath<any>(name.split("."), create, context) : context;
+		return name ? resolvePropertyPath<any>(name.split("."), create, context) : context!;
 	}
 
 	/**
